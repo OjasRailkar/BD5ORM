@@ -1,6 +1,7 @@
 const express = require('express');
 let { sequelize } = require('./lib/index.js');
 let { post } = require('./models/post.model.js');
+const { track } = require('../BD5.3_CW/models/track.model.js');
 
 const app = express();
 app.use(express.json())
@@ -9,23 +10,63 @@ const port = 3000;
 // Dummy data
 const dummyPosts = [
   {
-    name: 'Post1',
-    author: 'Author1',
-    content: 'This is the content of post 1',
-    title: 'Title1'
+    title: 'Getting Started with Node.js',
+    content:
+      'This post will guide you through the basics of Node.js and how to set up a Node.js project.',
+    author: 'Alice Smith',
   },
   {
-    'name': 'Post2',
-    'author': 'Author2',
-    'content': 'This is the content of post 2',
-    'title': 'Title2'
+    title: 'Advanced Express.js Techniques',
+    content:
+      'Learn advanced techniques and best practices for building applications with Express.js.',
+    author: 'Bob Johnson',
   },
   {
-    name: 'Post3',
-    author: 'Author1',
-    content: 'This is the content of post 3',
-    title: 'Title3'
-  }
+    title: 'ORM with Sequelize',
+    content:
+      'An introduction to using Sequelize as an ORM for Node.js applications.',
+    author: 'Charlie Brown',
+  },
+  {
+    title: 'Boost Your JavaScript Skills',
+    content:
+      'A collection of useful tips and tricks to improve your JavaScript programming.',
+    author: 'Dana White',
+  },
+  {
+    title: 'Designing RESTful Services',
+    content: 'Guidelines and best practices for designing RESTful APIs.',
+    author: 'Evan Davis',
+  },
+  {
+    title: 'Mastering Asynchronous JavaScript',
+    content:
+      'Understand the concepts and patterns for writing asynchronous code in JavaScript.',
+    author: 'Fiona Green',
+  },
+  {
+    title: 'Modern Front-end Technologies',
+    content:
+      'Explore the latest tools and frameworks for front-end development.',
+    author: 'George King',
+  },
+  {
+    title: 'Advanced CSS Layouts',
+    content:
+      'Learn how to create complex layouts using CSS Grid and Flexbox.',
+    author: 'Hannah Lewis',
+  },
+  {
+    title: 'Getting Started with React',
+    content: "A beginner's guide to building user interfaces with React.",
+    author: 'Ian Clark',
+  },
+  {
+    title: 'Writing Testable JavaScript Code',
+    content:
+      'An introduction to unit testing and test-driven development in JavaScript.',
+    author: 'Jane Miller',
+  },
 ]
 
 app.get('/seed_db', async (req, res) => {
@@ -64,77 +105,87 @@ app.get('/posts', async (req, res) => {
   }
 })
 
-//2 POST BY ID
+//Exercise 2: Add a new post in the database
 
-async function fetchPostById(id) {
-  let postData = await post.findOne({ where: { id } })
-
-  return { post: postData }
+async function addNewPost(newPost){
+  let newAddedPost = await post.create(newPost)
+  return {newAddedPost}
 }
 
-app.get('/posts/details/:id', async (req, res) => {
+app.post('/posts/new', async (req, res) => {
+  try {
+    let newPost = req.body.newPost
+
+    let result = await addNewPost(newPost)
+
+    if(!result){
+      return res.status(404).json({message : "Post not found"})
+    }
+
+  return res.status(200).json(result)  
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+})
+
+//3 update post
+async function updatePostById(newPostData, id) {
+  let postDetails = await post.findOne({where : {id}})
+
+  if (!postDetails) {
+    return {}
+  }
+
+  postDetails.set(newPostData)
+  let updatedTrack = await postDetails.save()
+  
+  return {message: "Track updated successfully", updatedTrack}
+}
+
+app.post('/posts/update/:id', async (req, res) => {
   try {
     let id = parseInt(req.params.id)
+    let newPostData = req.body.newPostData
 
-    let result = await fetchPostById(id)
+    let result = await updatePostById(newPostData, id)
 
-    if (result.post === null) {
-      return res.status(404).json({ message: 'No post found.' })
+    if(!result.message){
+      return res.status(404).json({message : "Posts not found"})
     }
 
-    return res.status(200).json(result)
+  return res.status(200).json(result)  
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: error.message });
   }
 })
 
-//Exercise 3: Fetch all posts by an author
 
-async function fetchPostsByAuthor(author) {
-  let postData = await post.findAll({ where: { author } })
+// Exercise 4: Delete a post from the database
 
-  return { posts: postData }
+async function deletePostByID(id) {
+  let destroyedPost = await post.destroy({where : {id}})
+  
+  if(!destroyedPost) return {}
+
+  return {message : "Post deleted successfully"}
 }
 
-app.get('/posts/author/:author', async (req, res) => {
+app.post('/posts/delete', async(req, res) =>{
   try {
-    let author = req.params.author
+    let id = parseInt(req.body.id)
+    
+    let result = await deletePostByID(id)
 
-    let result = await fetchPostsByAuthor(author)
-
-    if (result.posts.length === 0) {
-      return res.status(404).json({ message: 'No posts found for the author ' + author })
+    if(!result.message){
+      return res.status(404).json({message : "Post not found"})
     }
 
-    return res.status(200).json(result)
+  return res.status(200).json(result)
   } catch (error) {
-    return res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: error.message });  //server error
   }
 })
 
-//Exercise 4: Sort all the posts by their name
-
-async function sortPostsByName(order) {
-  let sortedPosts = await post.findAll({ order: [["name", order]] })
-
-  return { posts: sortedPosts }
-}
-
-app.get('/posts/sort/name', async (req, res) => {
-  try {
-    let order = req.query.order
-
-    let result = await sortPostsByName(order)
-
-    if (result.posts.length === 0) {
-      return res.status(404).json({ message: 'No posts found' })
-    }
-
-    return res.status(200).json(result)
-  } catch (error) {
-    return res.status(500).json({ error: error.message })
-  }
-})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
