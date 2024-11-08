@@ -2,7 +2,7 @@
   "name": "express-simple-starter",
   "private": true,
   "scripts": {
-    "start": "node BD5.1_HW1/index.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.18.2",
