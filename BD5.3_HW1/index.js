@@ -1,7 +1,7 @@
 const express = require('express');
 let { sequelize } = require('./lib/index.js');
 let { post } = require('./models/post.model.js');
-const { track } = require('../BD5.3_CW/models/track.model.js');
+
 
 const app = express();
 app.use(express.json())
