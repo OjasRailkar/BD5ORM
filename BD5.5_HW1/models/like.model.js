@@ -1,6 +1,6 @@
 let { DataTypes, sequelize } = require("../lib/index.js")
 let {user} = require("./user.model.js")
-let {track} = require("./track.model.js")
+let {book} = require("./book.model.js")
 
 let like = sequelize.define("like", {
     userID : {
@@ -10,16 +10,16 @@ let like = sequelize.define("like", {
             key: "id"
         }
     },
-    trackID : {
+    bookID : {
         type : DataTypes.INTEGER,
         references:{
-            model: track,
+            model: book,
             key: "id"
         }
     }
 })
 
-user.belongsToMany(track, { through : like })
-track.belongsToMany(user, { through : like })
+user.belongsToMany(book, { through : like })
+book.belongsToMany(user, { through : like })
 
 module.exports = { like }
