@@ -1,26 +1,27 @@
 let { DataTypes, sequelize } = require("../lib/index.js")
 
-let book = sequelize.define("book", {
+let recipe = sequelize.define("recipe", {
     title: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    author: {
+    chef: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    genre: {
+    cuisine: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
-    year: {
+    preparationTime: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    summary: {
+
+    instructions: {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
+        allowNull: false
+    }
 })
 
-module.exports = { book };
+module.exports = { recipe };

@@ -1,26 +1,27 @@
 let { DataTypes, sequelize } = require("../lib/index.js")
 
-let book = sequelize.define("book", {
-    title: {
+let movie = sequelize.define("movie", {
+    title : {
+        type: DataTypes.STRING,
+        allowNull: false
+    }, 
+    director : {
         type: DataTypes.STRING,
         allowNull: false
     },
-    author: {
+    genre : {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    genre: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    year: {
+    year : {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    summary: {
+    summary : {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
+        allowNull: false
+    }
+    
 })
 
-module.exports = { book };
+module.exports = { movie };
