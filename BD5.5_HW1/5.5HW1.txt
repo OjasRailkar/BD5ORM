@@ -1,0 +1,69 @@
+5.5HW1
+
+Exercise 1: Favorite a Recipe
+
+Create an endpoint /users/:id/favorite that will create a new author record in the database.
+
+Use the favoriteRecipe function to handle the add to favorite process.
+
+Extract the userId from the URL parameter and recipeId from the query parameter.
+
+API Call:
+
+http://localhost:3000/users/1/favorite?recipeId=2
+
+Expected Output
+
+{
+  'message': 'Recipe favorited',
+  'newFavorite': {
+    'userId': 1,
+    'recipeId': 2
+  }
+}
+
+Exercise 2: Unfavorite a Recipe
+
+Create an endpoint /users/:id/unfavorite that will allow a user to unfavorite a recipe.
+
+Use the unfavoriteRecipe function to handle the remove from favorite process.
+
+Extract the userId from the URL parameter and recipeId from the query parameter.
+
+API Call
+
+http://localhost:3000/users/1/unfavorite?recipeId=2
+
+Expected Output
+
+{
+  'message': 'Recipe unfavorited'
+}
+
+Exercise 3: Get All Favorited Recipes
+
+Create an endpoint /users/:id/favorites that will fetch all favorited recipes of a user.
+
+Use the getAllFavoritedRecipes function to handle fetching favorited recipes.
+
+Extract the userId from the URL parameter.
+
+API Call
+
+http://localhost:3000/users/1/favorites
+
+Expected Output
+
+{
+  'favoritedRecipes': [
+    {
+      'id': 1,
+      'title': 'Spaghetti Carbonara',
+      'chef': 'Chef Luigi',
+      'cuisine': 'Italian',
+      'preparationTime': 30,
+      'instructions': 'Cook spaghetti. In a bowl, mix eggs, cheese, and pepper. Combine with pasta and pancetta.'
+    },
+    // Other favorited recipes (if any)
+  ]
+}

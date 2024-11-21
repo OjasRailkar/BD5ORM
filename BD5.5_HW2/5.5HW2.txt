@@ -1,0 +1,70 @@
+5.5HW2
+
+
+Exercise 1: Like a Movie
+
+Create an endpoint /users/:id/like that will allow a user to like a movie.
+
+Use the likeMovie function to handle the liking process.
+
+Extract the userId from the URL parameter and movieId from the query parameter.
+
+API Call
+
+http://localhost:3000/users/1/like?movieId=2
+
+Expected Output
+
+{
+  'message': 'Movie liked',
+  'newLike': {
+    'userId': 1,
+    'movieId': 2
+  }
+}
+
+Exercise 2: Dislike a Movie
+
+Create an endpoint /users/:id/dislike that will allow a user to dislike a movie.
+
+Use the dislikeMovie function to handle the disliking process.
+
+Extract the userId from the URL parameter and movieId from the query parameter.
+
+API Call
+
+http://localhost:3000/users/1/dislike?movieId=2
+
+Expected Output
+
+{
+  'message': 'Movie disliked'
+}
+
+Exercise 3: Get All Liked Movies
+
+Create an endpoint /users/:id/liked that will fetch all liked movies of a user.
+
+Use the getAllLikedMovies function to handle fetching liked movies.
+
+Extract the userId from the URL parameter.
+
+API Call
+
+http://localhost:3000/users/1/liked
+
+Expected Output
+
+{
+  'likedMovies': [
+    {
+      'id': 1,
+      'title': 'Inception',
+      'director': 'Christopher Nolan',
+      'genre': 'Sci-Fi',
+      'year': 2010,
+      'summary': 'A skilled thief is given a chance at redemption if he can successfully perform an inception.'
+    },
+    // Other liked movies (if any)
+  ]
+}
