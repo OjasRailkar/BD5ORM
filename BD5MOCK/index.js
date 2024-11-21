@@ -168,11 +168,13 @@ app.get('/v2/seed_db', async (req, res) => {
       location: 'New York',
       cuisine: 'Indian',
     });
+
     await restaurant.create({
       name: 'The Yellow Chilli',
       location: 'Mumbai',
       cuisine: 'Indian',
     });
+    
     await restaurant.create({
       name: 'Gaggan',
       location: 'Bangkok',
@@ -206,7 +208,7 @@ app.get('/v2/restaurants', async (req, res) => {
       return res.status(404).json({ message: 'No restaurants found.' });
     }
 
-    rerturn res.status(200).json(response);
+    return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
